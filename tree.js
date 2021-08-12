@@ -3,39 +3,32 @@ class Tree {
         this.root = null; // start empty
     }
 
-    append(num) {
-        if (this.newTree()) {
-            this.root = new Leaf(num)
-            // might use return obj to select for animate.js
-            return this.root 
-        }
-        else {
-
-        }
+    emptyTree() {
+        return this.root === null;
     }
 
-    empty(leaf) {
-        return (isNaN(leaf) || (leaf === null));
+    plantTree(num) {
+        this.root = new Leaf(num);
     }
 
-    newTree() {
-        return this.empty(this.root);
-    }
-
-    searchTree(num) {
-        const parent = this.root.num;
+    addLeaf(num) {
+        // Start a new tree if this is the first leaf
+        if (this.emptyTree()) return this.plantTree(num);
+        
+        // Traverse the tree to recursively sort num relative to parent(s)
+        const parent = this.root;
 
         // Smaller num to the left, recursively
         if (num < parent) {
-            if (this.empty(parent.left)) {
-                parent.left = new Leaf(num);
+            // Add to left if there is room, else traverse left branch
+            if (parent.tryAddLeft(num)) {
                 return;
             } else return this.searchTree(parent.left);
         
         // Larger num to the right, recursively
         } else if (num > parent) {
-            if (this.empty(parent.right)) {
-                parent.right = new Leaf(num);
+            // Add to right if there is room, else traverse right branch
+            if (parent.tryAddRight(num)) {
                 return;
             } else return this.searchTree(parent.right);
 
@@ -49,9 +42,25 @@ class Tree {
 }
 
 class Leaf {
-    constructor(num) {
+    constructor(num,
+                left = null,
+                right = null) {
         this.num = num;
-        this.left = null;
-        this.right = null;
+        this.left = left;
+        this.right = right;
+    }
+
+    tryAddLeft(num) {
+        if (this.left != null) return false;
+
+        this.left = new Leaf(num);
+        return true;
+    }
+
+    tryAddRight(num) {
+        if (this.right != null) return false;
+
+        this.right = new Leaf(num);
+        return true;
     }
 }
