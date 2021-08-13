@@ -79,11 +79,33 @@ class Tree {
         const body = document.getElementsByTagName("body")[0];
         const tree = document.createElement("div");
         tree.setAttribute("id", "tree");
-        
-        // Create root
-        tree.appendChild(this.root.display());
-        // appendChild() for right branches, insertBefore() for left branches
+        const mainBranch = document.createElement("ul");
+        tree.appendChild(mainBranch);
 
+        const treeRoot = this.root.display();
+
+        const nestedTree = () => {
+            let root = this.root;
+            // let rootElem = root.display();
+            
+            const buildChildren = (leaf, where) => {
+                let node = leaf.display();
+                where.appendChild(node);
+
+                if (leaf.hasLeftChild()) {
+                    buildChildren(leaf.left, node);
+                }
+                if (leaf.hasRightChild()) {
+                   buildChildren(leaf.right, node);
+                }
+            }
+            
+            buildChildren(root, mainBranch);
+
+            return mainBranch;
+        }
+        
+        tree.appendChild(nestedTree());
 
         // Append tree to body
         body.appendChild(tree);
@@ -132,10 +154,10 @@ class Leaf {
     }
 
     display() {
-        const d = document.createElement("div");
-        d.setAttribute("id", this.num + "");
-        d.innerHTML = this.num + " ";
-        return d;
+        const li = document.createElement("li");
+        li.setAttribute("id", this.num + "");
+        li.innerHTML = this.num + " ";
+        return li;
     }
 
     toString() {
@@ -143,6 +165,19 @@ class Leaf {
         const left = ("\n" + this.left).replaceAll("\n","\n\t");
         const right = ("\n" + this.right).replaceAll("\n","\n\t");
         return root + left + right;
+    }
+
+    
+    hasRightChild() {
+        return this.right !== null;
+    }
+    
+    hasLeftChild() {
+        return this.left !== null;
+    }
+
+    hasChildren() {
+        return this.hasLeftChild() || this.hasRightChild();
     }
 }
 
@@ -175,7 +210,7 @@ function randomTree() {
 
 function fixedTree() {
     const ft = new Tree();
-    const leaves = [1,2,3,4,5,6];
+    const leaves = [2,4,5,6,1,3];
     leaves.forEach(
         leaf => {
             ft.addLeaf(leaf);
@@ -189,10 +224,5 @@ function fixedTree() {
 }
 
 const t = randomTree();
-t.addLeaf(4);
-t.addLeaf(3.9);
+document.body.onload = t.render.bind(t);
 
-t.render();
-console.log(String(t));
-t.removeLeaf(4);
-console.log(String(t));
