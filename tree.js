@@ -117,6 +117,12 @@ class Tree {
         // TODO
     }
 
+    destroyTree() {
+        const div = document.querySelectorAll("div");
+        for (let d of div) {
+            d.remove();
+        }
+        }
     toString() {
         return String(this.root);
     }
@@ -223,6 +229,25 @@ function fixedTree() {
     return ft;
 }
 
-const t = randomTree();
+let t = new Tree();
 document.body.onload = t.render.bind(t);
 
+const randomAbsNum = (limit) => {
+    const fiftyfifty = Math.random() < .5;
+    const negative = fiftyfifty ? -1 : 1;
+    return ~~(Math.random()*limit*negative);
+}
+
+const randomLeaf = () => {
+    let num = randomAbsNum(100);
+    console.log("random number", num);
+    t.addLeaf(num);
+}
+
+window.onkeypress = (event) => {
+    if (event.which === 32) {
+        randomLeaf();
+        t.destroyTree();
+        t.render();
+    }
+};
