@@ -117,21 +117,14 @@ class Tree {
             }
             
             buildChildren(root, mainBranch);
-
+            
             return mainBranch;
         }
-        
+
         tree.appendChild(nestedTree());
 
         // Append tree to body
         body.appendChild(tree);
-    }
-
-    destroyLeafByNum(num) {
-        if (this.emptyTree()) return;
-        this.removeLeaf(num);
-        let leafObj = document.getElementById(num+"");
-        if (leafObj !== null) document.getElementById(num+"").remove();
     }
 
     destroyTree() {
@@ -139,13 +132,13 @@ class Tree {
         for (let d of div) {
             d.remove();
         }
-        }
-    toString() {
-        return String(this.root);
     }
 
 
 
+    toString() {
+        return String(this.root);
+    }
 }
 
 class Leaf {
@@ -179,7 +172,7 @@ class Leaf {
     display() {
         const li = document.createElement("li");
         li.setAttribute("id", this.num + "");
-        li.innerHTML = this.num + " ";
+        li.innerHTML = "<span>" + this.num + "</span>";
         return li;
     }
 

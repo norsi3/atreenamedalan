@@ -1,1 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+body {
+    width: 100%;
+    text-align: center;
+}
 
+#tree {
+    list-style: none;
+    margin: 0 0 9px;
+    text-align: center;
+    padding: 0;
+    position: relative;
+    display: table;
+    font-size: 20px;
+}
+
+#tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: table;
+    width: 100%;
+    outline: none;
+}
+
+#tree li {
+    list-style: none;
+    margin: 0;
+    position: relative;
+    display: table-cell;
+    padding: 6px 0;
+    vertical-align: top;
+}
+
+#tree li:before {
+    outline: solid 1px #666;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+#tree li:first-child:before {
+    left: 50%;
+}
+#tree li:last-child:before {
+    right: 50%;
+}
+
+#tree span {
+    font-family: 'Architects Daughter', cursive;
+    border: solid 1px #666;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 2px;
+    padding: 4px 4px;
+    position: relative;
+}
+
+#tree span:before {
+    outline: solid 1px #666;
+    content: " ";
+    height: 9px;
+    left: 50%;
+    position: absolute;
+}
+#tree ul:before {
+    outline: none;
+}
+#tree span:before {
+    top: -9px;
+}
+
+#tree > li {
+    margin-top: 3px;
+}
+
+#tree ul {
+outline: none;
+}
