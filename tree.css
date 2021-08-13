@@ -1,7 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+
+
 body {
     width: 100%;
     text-align: center;
+    margin: 0 25vw;
+    background-color: #fff;
+}
+
+h1, figcaption {
+    color: #1B9AAA;
+    margin: 0;
+    text-align: left;
 }
 
 #tree {
@@ -36,11 +46,16 @@ body {
 #tree li:before {
     outline: solid 1px #666;
     content: "";
-    left: 0;
+    left: 10px;
     position: absolute;
     right: 0;
     top: 0;
 }
+
+#tree li > #tree li:before  {
+    outline: solid 1px #666;
+}
+
 #tree li:first-child:before {
     left: 50%;
 }
@@ -50,12 +65,16 @@ body {
 
 #tree span {
     font-family: 'Architects Daughter', cursive;
-    border: solid 1px #666;
-    border-radius: 20px;
+    border: none;
+    border-radius: 100%;
+    background: linear-gradient(0.33turn, #1B9AAA, #DDDBCB, #F5F1E3);
     display: inline-block;
     margin: 2px;
     padding: 4px 4px;
+    width: 30px;
+    height: 30px;
     position: relative;
+    color: #050505;
 }
 
 #tree span:before {
