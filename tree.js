@@ -114,7 +114,6 @@ class Tree {
 
         const nestedTree = () => {
             let root = this.root;
-            // let rootElem = root.display();
             
             const buildChildren = (leaf, where) => {
                 let node = leaf.display();
