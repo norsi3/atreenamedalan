@@ -32,6 +32,17 @@ class Tree {
         return this.root;
         
     }
+    
+    randomLeaf() {
+        const randomAbsNum = (limit) => {
+            const fiftyfifty = Math.random() < .5;
+            const negative = fiftyfifty ? -1 : 1;
+            return ~~(Math.random()*limit*negative);
+        }
+        
+        let num = randomAbsNum(100);
+        t.addLeaf(num);
+    }
 
     plantTree(num) {
         this.root = new Leaf(num);
@@ -56,8 +67,6 @@ class Tree {
                     rootSetter(right);
     
                 }
-
-                this.destroyLeafByNum(num);
     
             // Recursively call removeLeaf on children until num === root.num
             } else if (num < root.num) {
@@ -90,6 +99,13 @@ class Tree {
             
             const buildChildren = (leaf, where) => {
                 let node = leaf.display();
+                node.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    this.removeLeaf(leaf.num);
+                    this.destroyTree();
+                    this.render();
+                });
+
                 where.appendChild(node);
 
                 if (leaf.hasLeftChild()) {
@@ -113,8 +129,9 @@ class Tree {
 
     destroyLeafByNum(num) {
         if (this.emptyTree()) return;
-
-        // TODO
+        this.removeLeaf(num);
+        let leafObj = document.getElementById(num+"");
+        if (leafObj !== null) document.getElementById(num+"").remove();
     }
 
     destroyTree() {
@@ -187,66 +204,12 @@ class Leaf {
     }
 }
 
-function randomInt(max) {
-    return ~~(Math.random()*max);
-}
-
-function randomTree() {
-    const rt = new Tree();
-    randomLeaves = [...Array(randomInt(15))].map(leaf=>randomInt(15));
-
-    // Remove duplicates
-    randomLeaves = [...new Set(randomLeaves)];
-    randomLeaves.forEach(leaf => {
-        if (leaf !== 0) {
-            rt.addLeaf(leaf)
-        }
-    });
-
-    // Put randomLeaves in order for display as h1
-    randomLeaves.sort(function(a, b) { return a - b; });
-    const h = document.createElement("h1");
-    h.innerHTML = randomLeaves + "";
-    document.getElementsByTagName("body")[0].append(h);
-
-    return rt;
-}
-
-// randomTree().render();
-
-function fixedTree() {
-    const ft = new Tree();
-    const leaves = [2,4,5,6,1,3];
-    leaves.forEach(
-        leaf => {
-            ft.addLeaf(leaf);
-        }
-    );
-
-    const h = document.createElement("h1");
-    h.innerHTML = leaves + "";
-    document.getElementsByTagName("body")[0].append(h);
-    return ft;
-}
-
 let t = new Tree();
 document.body.onload = t.render.bind(t);
 
-const randomAbsNum = (limit) => {
-    const fiftyfifty = Math.random() < .5;
-    const negative = fiftyfifty ? -1 : 1;
-    return ~~(Math.random()*limit*negative);
-}
-
-const randomLeaf = () => {
-    let num = randomAbsNum(100);
-    console.log("random number", num);
-    t.addLeaf(num);
-}
-
 window.onkeypress = (event) => {
     if (event.which === 32) {
-        randomLeaf();
+        t.randomLeaf();
         t.destroyTree();
         t.render();
     }
