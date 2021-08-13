@@ -1,3 +1,21 @@
+const animateCSS = (element, animation, prefix = 'animate__') =>
+  // We create a Promise and return it
+  new Promise((resolve, reject) => {
+    const animationName = `${prefix}${animation}`;
+    const node = document.querySelector(element);
+
+    node.classList.add(`${prefix}animated`, animationName);
+
+    // When the animation ends, we clean the classes and resolve the Promise
+    function handleAnimationEnd(event) {
+      event.stopPropagation();
+      node.classList.remove(`${prefix}animated`, animationName);
+      resolve('Animation ended');
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd, {once: true});
+  });
+
 class Tree {
     constructor() {
         this.root = null; // start empty
@@ -42,6 +60,7 @@ class Tree {
         
         let num = randomAbsNum(100);
         t.addLeaf(num);
+        return num;
     }
 
     plantTree(num) {
@@ -171,7 +190,7 @@ class Leaf {
 
     display() {
         const li = document.createElement("li");
-        li.setAttribute("id", this.num + "");
+        li.setAttribute("id", "leaf" + this.num);
         li.innerHTML = "<span>" + this.num + "</span>";
         return li;
     }
@@ -202,8 +221,10 @@ document.body.onload = t.render.bind(t);
 
 window.onkeypress = (event) => {
     if (event.which === 32) {
-        t.randomLeaf();
+        let n = t.randomLeaf();
         t.destroyTree();
         t.render();
+        const animation = "swing";
+        animateCSS("#leaf" + n, animation);
     }
 };
