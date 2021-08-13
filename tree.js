@@ -6,30 +6,38 @@ class Tree {
     emptyTree() {
         return this.root === null;
     }
+    
+    insertNum(num) {
+        this.root = this.addLeaf(num, this.root);
+    }
 
     plantTree(num) {
         this.root = new Leaf(num);
+        return this.root;
     }
 
-    addLeaf(num) {
+
+    addLeaf(num, root) {
         // Start a new tree if this is the first leaf
-        if (this.emptyTree()) return this.plantTree(num);
+        if (this.emptyTree()) { 
+            this.plantTree(num);
+            return this.root;
+        }
         
         // Traverse the tree to recursively sort num relative to parent(s)
-
         // Smaller num to the left, recursively
-        if (num < this.root.num) {
+        if (num < root.num) {
             // Add to left if there is room, else traverse left branch
             if (this.root.tryAddLeft(num)) {
-                return;
-            } else return this.addLeaf(this.root.left);
+                return null;
+            } else return this.addLeaf(num, root.left);
         
         // Larger num to the right, recursively
-        } else if (num > this.root.num) {
+        } else if (num > root.num) {
             // Add to right if there is room, else traverse right branch
-            if (this.root.tryAddRight(num)) {
-                return;
-            } else return this.addLeaf(this.root.right);
+            if (root.tryAddRight(num)) {
+                return null;
+            } else return this.addLeaf(num, root.right);
 
         // Disregard duplicate adds        
         } else {
@@ -72,6 +80,7 @@ class Tree {
         tree.appendChild(this.root.display());
         // appendChild() for right branches, insertBefore() for left branches
 
+
         // Append tree to body
         body.appendChild(tree);
     }
@@ -91,14 +100,12 @@ class Leaf {
 
     tryAddLeft(num) {
         if (this.left !== null) return false;
-
         this.left = new Leaf(num);
         return true;
     }
 
     tryAddRight(num) {
         if (this.right !== null) return false;
-
         this.right = new Leaf(num);
         return true;
     }
@@ -124,14 +131,12 @@ function randomInt(max) {
 function randomTree() {
     const rt = new Tree();
     randomLeaves = [...Array(randomInt(15))].map(leaf=>randomInt(15));
+
+    // Remove duplicates
+    randomLeaves = [...new Set(randomLeaves)];
     randomLeaves.forEach(leaf => {
         if (leaf !== 0) {
-            rt.addLeaf(leaf)
-        }
-        else {
-            // Remove 0s
-            index = randomLeaves.indexOf(leaf);
-            randomLeaves.splice(index, 1);
+            rt.insertNum(leaf)
         }
     });
 
